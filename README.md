@@ -15,3 +15,10 @@ DoING 基于嵌入式的视觉运动控制
 * 图像处理 | 提取信息
 * 利用串口发送消息(undetermined)
 * 控制步进电机
+
+
+### License
+
+
+---
+Author：@TongxinV
