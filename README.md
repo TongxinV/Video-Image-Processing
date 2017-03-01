@@ -17,7 +17,7 @@ DoING 基于嵌入式的视觉运动控制
 * 控制步进电机
 
 
-### SourceTree
+### Tree
 
 
 ### License
