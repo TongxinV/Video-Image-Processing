@@ -31,4 +31,4 @@ DoING 基于嵌入式的视觉运动控制
 
 
 ---
-Author：@TongxinV
+author：@TongxinV
