@@ -11,6 +11,8 @@ DEPENDPATH  += . ../include
 
 
 SOURCES += \
-    smdkv210/linuxfbscreen.cpp
+    smdkv210/linuxfbscreen.cpp \
+    c1screen.cpp
 HEADERS += \
-    smdkv210/linuxfbscreen.h
+    smdkv210/linuxfbscreen.h \
+    ../include/c1screen.h
