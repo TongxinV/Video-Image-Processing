@@ -8,15 +8,12 @@ public:
     virtual ~C1Screen();
 
     virtual bool initDevice() = 0;
-    virtual void shutdownDevice();
+    virtual void shutdownDevice() { }
 
-protected:
     int displayId;
 
     int physWidth;
     int physHeight;
-
-    unsigned char * displaySpace;
 };
 
 

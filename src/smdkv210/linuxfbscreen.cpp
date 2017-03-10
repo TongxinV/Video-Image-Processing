@@ -14,18 +14,23 @@ class LinuxFbScreenPrivate
 {
 public:
     LinuxFbScreenPrivate();
+    /*
+     * LinuxFbScreen 有拷贝构造函数 所以LinuxFbScreenPrivate可以没有
+     * 把私有变量封装成一个类的指针的好处 而且简化了LinuxFbScreen拷贝构造函数的处理
+     */
     virtual ~LinuxFbScreenPrivate();
 
     void openTty();
     void closeTty();
 
+    unsigned char *fb_ptr;
     int ttyfd;
 
 };
 
 
 LinuxFbScreenPrivate::LinuxFbScreenPrivate()
-    :ttyfd(-1)
+    :fb_ptr(NULL), ttyfd(-1)
 {
 
 }
@@ -60,11 +65,15 @@ void LinuxFbScreenPrivate::closeTty()
 
 
 LinuxFbScreen::LinuxFbScreen()
-    : d_ptr(new LinuxFbScreenPrivate)
+    : C1Screen(0, 0), d_ptr(new LinuxFbScreenPrivate)
 {
 
 }
+LinuxFbScreen::LinuxFbScreen(LinuxFbScreen&)
+    : C1Screen(0, 0), d_ptr(new LinuxFbScreenPrivate)
+{
 
+}
 
 LinuxFbScreen::~LinuxFbScreen()
 {
@@ -102,15 +111,22 @@ bool LinuxFbScreen::initDevice()
 
     // Step 3 : mmap
     unsigned long len = vinfo.xres_virtual * vinfo.yres_virtual * vinfo.bits_per_pixel / 8;
-    this->fb_ptr = (unsigned char *)mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, d_ptr->ttyfd, 0);
-    if (NULL == this->fb_ptr){
+    d_ptr->fb_ptr = (unsigned char *)mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, d_ptr->ttyfd, 0);
+    if (NULL == d_ptr->fb_ptr){
         perror("mmap");
         return false;
     }
-    printf("fb mmap success. pfb = %p.\n", this->fb_ptr);
+    printf("fb mmap success. pfb = %p.\n", d_ptr->fb_ptr);
+
+
 
     return true;
 
+}
+
+void LinuxFbScreen::shutdownDevice()
+{
+    d_ptr->closeTty();
 }
 
 
