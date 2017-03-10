@@ -5,6 +5,8 @@
 
 class LinuxFbScreenPrivate;
 
+
+/* 我的想法：把需要交互的数据做成父类 私有封装成一个类 */
 class LinuxFbScreen : public C1Screen
 {
 public:

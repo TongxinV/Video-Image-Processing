@@ -9,8 +9,9 @@ int main()
 {
     LinuxFbScreen screen;
     screen.initDevice();
-    sleep(1);
+    sleep(3);
     screen.shutdownDevice();
+
     cout << "Hello World!" << endl;
     return 0;
 }

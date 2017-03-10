@@ -1,6 +1,8 @@
 #ifndef C1SCREEN_H
 #define C1SCREEN_H
 
+#include <stdio.h>
+
 class C1Screen
 {
 public:
@@ -14,6 +16,8 @@ public:
 
     int physWidth;
     int physHeight;
+
+    unsigned char *displaySpace;
 };
 
 

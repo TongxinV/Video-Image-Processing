@@ -23,14 +23,12 @@ public:
     void openTty();
     void closeTty();
 
-    unsigned char *fb_ptr;
     int ttyfd;
 
 };
 
 
-LinuxFbScreenPrivate::LinuxFbScreenPrivate()
-    :fb_ptr(NULL), ttyfd(-1)
+LinuxFbScreenPrivate::LinuxFbScreenPrivate():ttyfd(-1)
 {
 
 }
@@ -42,15 +40,19 @@ LinuxFbScreenPrivate::~LinuxFbScreenPrivate()
 
 void LinuxFbScreenPrivate::openTty()
 {
+    printf("1.\n");
+    printf("1.\n");
     const char *const devs[] = {"/dev/fb0", "/dev/fb1", "/dev/fb2", 0};
 
     for (const char * const *dev = devs; *dev; ++dev) {
         ttyfd = ::open(*dev, O_RDWR);
+        printf("%s.\n", *dev);
         if (ttyfd != -1)
             break;
     }
 
     if (ttyfd == -1)
+        printf("2.\n");
         return;
 }
 
@@ -85,7 +87,7 @@ bool LinuxFbScreen::initDevice()
     //Step 1 : open fb device
     d_ptr->openTty();
 
-    //Step 2 : get  fb info
+    //Step 2 : get fb info
     fb_var_screeninfo vinfo;
     fb_fix_screeninfo finfo;
 
@@ -93,12 +95,12 @@ bool LinuxFbScreen::initDevice()
     memset(&finfo, 0, sizeof(finfo));
 
     if (ioctl(d_ptr->ttyfd, FBIOGET_VSCREENINFO, &vinfo)) {
-        perror("QLinuxFbScreen::initDevice");
+        perror("LinuxFbScreen::initDevice");
         return false;
     }
 
-    if (ioctl(d_ptr->ttyfd, FBIOGET_FSCREENINFO, &vinfo)) {
-        perror("QLinuxFbScreen::initDevice");
+    if (ioctl(d_ptr->ttyfd, FBIOGET_FSCREENINFO, &finfo)) {
+        perror("LinuxFbScreen::initDevice");
         return false;
     }
 #if 1
@@ -111,12 +113,12 @@ bool LinuxFbScreen::initDevice()
 
     // Step 3 : mmap
     unsigned long len = vinfo.xres_virtual * vinfo.yres_virtual * vinfo.bits_per_pixel / 8;
-    d_ptr->fb_ptr = (unsigned char *)mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, d_ptr->ttyfd, 0);
-    if (NULL == d_ptr->fb_ptr){
+    displaySpace = (unsigned char *)mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, d_ptr->ttyfd, 0);
+    if (NULL == displaySpace){
         perror("mmap");
         return false;
     }
-    printf("fb mmap success. pfb = %p.\n", d_ptr->fb_ptr);
+    printf("fb mmap success. pfb = %p.\n", displaySpace);
 
 
 
