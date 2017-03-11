@@ -2,7 +2,7 @@
 
 
 
-C1Screen::C1Screen(int w, int h)
+C1Screen::C1Screen(unsigned int w, unsigned int h)
     : displayId(0), physWidth(w), physHeight(h),
       displaySpace(NULL)
 {

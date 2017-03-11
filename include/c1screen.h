@@ -5,19 +5,22 @@
 
 class C1Screen
 {
+protected:
+
+    int displayId;
+
+    unsigned int physWidth;
+    unsigned int physHeight;
+
+    unsigned int * displaySpace;
 public:
-    C1Screen(int w, int h);
+    C1Screen(unsigned int w, unsigned int h);
     virtual ~C1Screen();
 
     virtual bool initDevice() = 0;
     virtual void shutdownDevice() { }
 
-    int displayId;
 
-    int physWidth;
-    int physHeight;
-
-    unsigned char *displaySpace;
 };
 
 

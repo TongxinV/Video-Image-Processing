@@ -7,8 +7,9 @@ using namespace std;
 
 int main()
 {
-    LinuxFbScreen screen;
+    LinuxFbScreen screen(1024, 600);
     screen.initDevice();
+    screen.setPixmap();
     sleep(3);
     screen.shutdownDevice();
 

@@ -2,6 +2,7 @@
 #define LINUXFBSCREEN_H
 
 #include <c1screen.h>
+#include <c1painter.h>
 
 class LinuxFbScreenPrivate;
 
@@ -10,14 +11,18 @@ class LinuxFbScreenPrivate;
 class LinuxFbScreen : public C1Screen
 {
 public:
-    LinuxFbScreen();
+    LinuxFbScreen(unsigned int w, unsigned int h);
     LinuxFbScreen(LinuxFbScreen&);
     virtual ~LinuxFbScreen();
 
     virtual bool initDevice();
     virtual void shutdownDevice();
 
+    void setPixmap();         //显示数据
+
+
 private:
+    C1Painter *painter;
     LinuxFbScreenPrivate *d_ptr;
 
 };

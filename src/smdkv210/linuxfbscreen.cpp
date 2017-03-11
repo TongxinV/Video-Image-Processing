@@ -66,13 +66,13 @@ void LinuxFbScreenPrivate::closeTty()
 }
 
 
-LinuxFbScreen::LinuxFbScreen()
-    : C1Screen(0, 0), d_ptr(new LinuxFbScreenPrivate)
+LinuxFbScreen::LinuxFbScreen(unsigned int w, unsigned int h)
+    : C1Screen(w, h), painter(new C1Painter), d_ptr(new LinuxFbScreenPrivate)
 {
 
 }
 LinuxFbScreen::LinuxFbScreen(LinuxFbScreen&)
-    : C1Screen(0, 0), d_ptr(new LinuxFbScreenPrivate)
+    : C1Screen(0, 0), painter(new C1Painter), d_ptr(new LinuxFbScreenPrivate)
 {
 
 }
@@ -113,13 +113,16 @@ bool LinuxFbScreen::initDevice()
 
     // Step 3 : mmap
     unsigned long len = vinfo.xres_virtual * vinfo.yres_virtual * vinfo.bits_per_pixel / 8;
-    displaySpace = (unsigned char *)mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, d_ptr->ttyfd, 0);
+    displaySpace = (unsigned int *)mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, d_ptr->ttyfd, 0);
     if (NULL == displaySpace){
         perror("mmap");
         return false;
     }
     printf("fb mmap success. pfb = %p.\n", displaySpace);
 
+
+    // init painter
+    painter->initPainter(displaySpace, physWidth, physHeight);
 
 
     return true;
@@ -131,4 +134,8 @@ void LinuxFbScreen::shutdownDevice()
     d_ptr->closeTty();
 }
 
+void LinuxFbScreen::setPixmap()
+{
 
+    painter->setPixmap();
+}
