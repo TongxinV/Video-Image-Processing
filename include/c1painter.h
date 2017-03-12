@@ -3,6 +3,9 @@
 
 #include <stdio.h>
 
+#include <c1image.h>
+
+
 class C1Painter
 {
 private:
@@ -10,18 +13,20 @@ private:
     unsigned int Width;
     unsigned int Height;             //画板的宽和高
 
-    unsigned int x0;
-    unsigned int y0;                 //显示位置
-    unsigned int * pStar;      //画板原点 应被赋值 4byte
+    //int x0;
+    //int y0;                        //显示位置
+    unsigned int *pStar;             //画板原点 应被赋值
 
-    unsigned char *pData;            //图片数据         1byte
+    unsigned char *data;             //数据流
+    unsigned int  color;             //背景色
 
 public:
     C1Painter();
-    ~C1Painter();
+    virtual ~C1Painter();
 
-    void initPainter(unsigned int *const displaySpace, unsigned int w, unsigned int h);
-    void setPixmap();      //显示数据
+    void _initPainter(unsigned int *const displaySpace, unsigned int w, unsigned int h);
+    void _setPixmap(unsigned int x, unsigned int y, const C1Image &img);      //在(x,y)显示数据
+    void Draw_Test();
 };
 
 

@@ -71,7 +71,7 @@ LinuxFbScreen::LinuxFbScreen(unsigned int w, unsigned int h)
 {
 
 }
-LinuxFbScreen::LinuxFbScreen(LinuxFbScreen&)
+LinuxFbScreen::LinuxFbScreen(const LinuxFbScreen &)
     : C1Screen(0, 0), painter(new C1Painter), d_ptr(new LinuxFbScreenPrivate)
 {
 
@@ -122,7 +122,7 @@ bool LinuxFbScreen::initDevice()
 
 
     // init painter
-    painter->initPainter(displaySpace, physWidth, physHeight);
+    painter->_initPainter(displaySpace, physWidth, physHeight);
 
 
     return true;
@@ -134,8 +134,8 @@ void LinuxFbScreen::shutdownDevice()
     d_ptr->closeTty();
 }
 
-void LinuxFbScreen::setPixmap()
+void LinuxFbScreen::setPixmap(int x, int y, C1Image &i)
 {
 
-    painter->setPixmap();
+    painter->_setPixmap(x, y, i);
 }
