@@ -19,6 +19,4 @@ HEADERS += \
     smdkv210/linuxfbscreen.h \
     ../include/c1screen.h \
     ../include/c1painter.h \
-    ../include/c1image.h \
-    ../include/Image_001.h \
-    ../include/Image_002.h
+    ../include/c1image.h
