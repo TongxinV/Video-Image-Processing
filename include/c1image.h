@@ -3,27 +3,26 @@
 
 
 #include <stdio.h>
-//#include <c1painter.h>              //应该是图片利用painter来显示
-                                    //所以Image类应嵌套一个painter
-                                    //嵌套的方式有组合和继承
+
 
 class ImageData;
+//class ImageFile;      //打开文件和关闭文件的处理
 
 class C1Image
 {
-private:
+protected:
     ImageData *d;
 
 public:
 
     C1Image();
+    C1Image(unsigned int w, unsigned int h, unsigned char *data);
     virtual ~C1Image();
 
+    void loadFromData(unsigned int w, unsigned int h, const unsigned char *data);
+    void loadFromData(const char *path);
 
-    void loadFromData(int w, int h, const unsigned char *data);
-   //C1Image& loadFromData(const char *data);   //把数据提取成C1Image类型的对象
-
-    //ImageData& formImage(C1Image& i);       //提供访问私有数据接口
+    void freeData();   //d->data将来指向某一块内存，所以需要free，经验不足暂时只能考虑到这种处理方法
 
     unsigned int width() const;
     unsigned int height() const;

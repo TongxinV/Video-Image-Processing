@@ -23,7 +23,7 @@ public:
     virtual void shutdownDevice();
 
 
-    void setPixmap(int x, int y, C1Image& i);         //显示数据
+    void setPixmap(unsigned int x, unsigned int y, C1Image *i);         //显示数据
 
 private:
 

@@ -2,8 +2,7 @@
 
 
 C1Painter::C1Painter()
-    : Width(0), Height(0),
-      pStar(NULL), data(NULL), color(0xffffffff)
+    : Width(0), Height(0),pStar(NULL)
 {
 
 }
@@ -20,13 +19,19 @@ void C1Painter::_initPainter(unsigned int * displaySpace, unsigned int w, unsign
     Height= h;
 }
 
-void C1Painter::_setPixmap(unsigned int x, unsigned int y,const C1Image &img)
+
+void C1Painter::_setPixmap(unsigned int x, unsigned int y, const C1Image *img)
 {
+    if(!img){
+        printf("Images isn't exit!.\n");
+        return ;
+    }
+
     unsigned int *p = pStar;
 
-    const unsigned char * Byte = img.data();
-    unsigned int imageWidth    =img.width();
-    unsigned int imageHeight  =img.height();
+    const unsigned char * Byte = img->data();
+    unsigned int imageWidth    =img->width();
+    unsigned int imageHeight   =img->height();
 
     unsigned int i,j;
     unsigned int cnt;
@@ -53,7 +58,7 @@ void C1Painter::Draw_Test()
     {
         for (x=0; x<Width; x++)
         {
-            *(p + y * Width + x) = color;
+            *(p + y * Width + x) = 0xffffffff;
         }
     }
 }

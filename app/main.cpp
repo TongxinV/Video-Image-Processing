@@ -3,21 +3,27 @@
 #include <smdkv210/linuxfbscreen.h>
 
 #include <c1image.h>
-//#include <Image_001.h>
-//#include <Image_002.h>
+
 using namespace std;
 
 int main()
 {
 
 
-#if 0
-    C1Image img;
-    img.loadFromData(1024, 600, Image_002);
-
+#if 1
     LinuxFbScreen screen(1024, 600);
     screen.initDevice();
+
+
+    C1Image *img = new C1Image;
+
+    img->loadFromData("tu001.bmp");
+
     screen.setPixmap(0, 0, img);
+
+    img->freeData();
+
+
     sleep(3);
     screen.shutdownDevice();
 #endif
