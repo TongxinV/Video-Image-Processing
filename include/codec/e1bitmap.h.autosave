@@ -61,7 +61,7 @@ public:
     //void showRgbQuan();
 
     bool read24BitBmpFile2Img(const char* path);
-    bool writeImgData2BmpFile();
+    //bool writeImgData2BmpFile();
     void decodeBmpFile();
 };
 
