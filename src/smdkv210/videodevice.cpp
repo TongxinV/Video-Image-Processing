@@ -226,8 +226,23 @@ int videodevice::stop_capturing()
     return 0;
 }
 
-int videodevice::get_frame(void * * frame_buffer, int * len)
+int videodevice::get_frame(void * * frame_buf, int * len)
 {
+    //从缓冲队列取出一个缓冲帧
+    struct v4l2_buffer buf;
+    memset(&buf, 0, sizeof(buf));
+    buf.type =V4L2_BUF_TYPE_VIDEO_CAPTURE;
+    buf.memory =V4L2_MEMORY_MMAP;
+
+    if(ioctl (fd, VIDIOC_DQBUF, &buf) < 0){
+        perror("ioctl VIDIOC_DQBUF error!  ");
+        return -1;
+    }
+
+    *frame_buf = buffers[buf.index].start;
+    *len = buffers[buf.index].length;
+    iIndex = buf.index;
+
     return 0;
 }
 
@@ -235,7 +250,21 @@ int videodevice::unget_frame()
 {
     //帧缓存回队列
 
-    return 0;
+    if(iIndex != -1)
+    {
+        struct v4l2_buffer buf;
+        memset(&buf, 0, sizeof(buf));
+        buf.type =V4L2_BUF_TYPE_VIDEO_CAPTURE;
+        buf.memory =V4L2_MEMORY_MMAP;
+
+        buf.index = iIndex;
+        if(ioctl (fd, VIDIOC_QBUF, &buf) < 0){
+            perror("ioctl VIDIOC_QBUF error!  ");
+            return -1;
+        }
+        return 0;
+    }
+    return -1;
 }
 
 
