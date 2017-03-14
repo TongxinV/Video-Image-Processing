@@ -15,10 +15,12 @@ SOURCES += \
     c1screen.cpp \
     c1painter.cpp \
     c1image.cpp \
-    ../include/codec/e1bitmap.cpp
+    ../include/codec/e1bitmap.cpp \
+    smdkv210/videodevice.cpp
 HEADERS += \
     smdkv210/linuxfbscreen.h \
     ../include/c1screen.h \
     ../include/c1painter.h \
     ../include/c1image.h \
-    ../include/codec/e1bitmap.h
+    ../include/codec/e1bitmap.h \
+    ../include/smdkv210/videodevice.h

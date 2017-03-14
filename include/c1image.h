@@ -12,7 +12,7 @@ class ImageData
 {
 public:
     ImageData();
-    ~ImageData();
+    virtual ~ImageData();
 
     //unsigned short fileType;
     typedef enum tagfileType

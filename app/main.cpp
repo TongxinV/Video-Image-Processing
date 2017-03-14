@@ -4,14 +4,33 @@
 
 #include <smdkv210/linuxfbscreen.h>
 #include <c1image.h>
+#include <smdkv210/videodevice.h>
+
 
 using namespace std;
 
 int main()
 {
+    videodevice vd;
+
+    vd.open_device();
+
+    vd.init_device();
+
+    vd.init_mmap();
+
+    //vd.init_v4l2();
+
+    vd.start_capturing();
+
+    sleep(1);
+
+    vd.stop_capturing();
+
+    vd.close_device();
 
 
-#if 1
+#if 0
     LinuxFbScreen screen(1024, 600);
     screen.initDevice();
 
