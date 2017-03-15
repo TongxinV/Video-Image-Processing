@@ -83,8 +83,8 @@ int videodevice::init_device()
     fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 
     fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_YUYV;    //视频源格式 测试只能设置成YUYV
-    fmt.fmt.pix.width  = 640;                       //视频宽度   测试发现改变不了
-    fmt.fmt.pix.height = 480;                       //视频高度   测试发现改变不了
+    fmt.fmt.pix.width  = VIDEO_WIDTH;               //视频宽度   测试发现改变不了
+    fmt.fmt.pix.height = VIDEO_HEIGHT;              //视频高度   测试发现改变不了
     fmt.fmt.pix.field  = V4L2_FIELD_INTERLACED;     //隔行扫描   显示也必须是隔行扫描
 
     if (-1 == ioctl(fd, VIDIOC_S_FMT, &fmt))
@@ -161,11 +161,11 @@ int videodevice::init_mmap()
             perror("mmap faild! \n");
             return -1;
         }
-    }
 
-    printf("Frame buffer %d: address = 0x%x, length = %d \n",\
-           req.count, (unsigned int)buffers[n_buffers].start,\
-           buffers[n_buffers].length);
+        printf("Frame buffer %d: address = 0x%x, length = %d \n",\
+               req.count, (unsigned int)buffers[n_buffers].start,\
+               buffers[n_buffers].length);
+    }
 
     return 0;
 }

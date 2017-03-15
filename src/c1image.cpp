@@ -8,7 +8,7 @@
 
 
 ImageData::ImageData()
-    : fileType(IMG_TYPE_BMP),width(0),height(0),depth(24),channels(3), /*offset(0)*/data(NULL)
+    : width(0),height(0),depth(24),channels(3), /*offset(0)*/data(NULL)
 {
 
 }
@@ -20,13 +20,15 @@ ImageData::~ImageData()
 
 
 C1Image::C1Image()
-    : d(new ImageData)/*, f(new ImageFile)*/
+    : format(Format_RGB888), fileType(IMG_TYPE_UNKN),
+      d(new ImageData)/*, f(new ImageFile)*/
 {
 
 }
 
-C1Image::C1Image(unsigned int w, unsigned int h, unsigned char *data)
-    : d(new ImageData)
+C1Image::C1Image(unsigned char *data, unsigned int w, unsigned int h, Format Ft)
+    : format(Ft), fileType(IMG_TYPE_UNKN),
+      d(new ImageData)/*, f(new ImageFile)*/
 {
     d->width = w;
     d->height= h;

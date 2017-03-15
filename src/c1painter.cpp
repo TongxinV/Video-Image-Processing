@@ -27,18 +27,18 @@ void C1Painter::_setPixmap(unsigned int x, unsigned int y, const C1Image *img)
         return ;
     }
 
-    unsigned int *p = pStar;
+    unsigned int *p = pStar + y * Width + x;        //画笔位置
 
-    const unsigned char * Byte = img->data();
+    const unsigned char * Byte =img->data ();
     unsigned int imageWidth    =img->width();
     unsigned int imageHeight   =img->height();
 
     unsigned int i,j;
     unsigned int cnt;
 
-    for (i = y; (i<imageHeight+y)&&(i<Height); i++)
+    for (i = 0; (i<imageHeight)&&(i<Height-y); ++i)
     {
-        for (j = x; (j<imageWidth+x)&&(j<Width); j++)
+        for (j = 0; (j<imageWidth)&&(j<Width-x); ++j)
         {
             cnt = imageWidth*i+j;
             cnt*=3;
