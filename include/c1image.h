@@ -14,17 +14,6 @@ public:
     ImageData();
     virtual ~ImageData();
 
-    //unsigned short fileType;
-    typedef enum tagfileType
-    {
-        IMG_TYPE_BMP,
-        IMG_TYPE_JPEG,
-        IMG_TYPE_PNG,
-        IMG_TYPE_UNKN
-    }fileType_e;
-
-    fileType_e fileType;
-
     unsigned int width;
     unsigned int height;
     unsigned int depth;
@@ -37,6 +26,26 @@ public:
 
 class C1Image
 {
+public:
+    typedef enum tagFormat
+    {
+        Format_RGB888,
+        Format_RGB565,
+        Format_RGB16,
+        Format_RGB24,
+        Format_RGB32
+    }Format;
+    Format format;
+
+    typedef enum tagfileType
+    {
+        IMG_TYPE_BMP,
+        IMG_TYPE_JPEG,
+        IMG_TYPE_PNG,
+        IMG_TYPE_UNKN
+    }FileType;
+
+    FileType fileType;
 protected:
     ImageData *d;
     //ImageFile *f;
@@ -44,7 +53,7 @@ protected:
 public:
 
     C1Image();
-    C1Image(unsigned int w, unsigned int h, unsigned char *data);
+    C1Image(unsigned char *data, unsigned int w, unsigned int h, Format Ft);
     virtual ~C1Image();
 
 
