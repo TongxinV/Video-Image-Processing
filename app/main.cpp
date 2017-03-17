@@ -2,9 +2,9 @@
 #include <unistd.h>
 
 
-#include <smdkv210/linuxfbscreen.h>
-#include <c1image.h>
-#include <smdkv210/videodevice.h>
+//#include <smdkv210/linuxfbscreen.h>
+//#include <c1image.h>
+//#include <smdkv210/videodevice.h>
 
 #include <smdkv210/showvideo.h>
 
@@ -17,9 +17,9 @@ int main()
     //视频显示测试
     showvideo sv;
 
-    for(int i = 0; i < 10; ++i){
+    for(int i = 0; i < 1000; ++i){
         sv.show();
-        usleep(100);
+        //usleep(100);
     }
 
 #endif

@@ -31,6 +31,11 @@ public:
     int convert_yuv_to_rgb_pixel(int y, int u, int v);
     int convert_yuv_rgb_buffer(unsigned char *yuv, unsigned char *rgb,\
                        unsigned int width, unsigned int height);
+
+    void video_yuv_to_rgb_pixel(unsigned char **pixel, int y, int u, int v);
+    void video_yuyv_to_rgb24(const void *yuyv,void *rgb,\
+                             unsigned int width,unsigned int height);
+
 };
 
 

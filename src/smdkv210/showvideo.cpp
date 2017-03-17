@@ -42,15 +42,16 @@ void showvideo::show()
         printf("get frame failed.\n");
     }
 
-    sleep(1);
+    //sleep(1);
 
-    convert_yuv_rgb_buffer(p, pp, VIDEO_WIDTH, VIDEO_HEIGHT);   //数据转换
+    video_yuyv_to_rgb24(p, pp, VIDEO_WIDTH, VIDEO_HEIGHT);
+    //convert_yuv_rgb_buffer(p, pp, VIDEO_WIDTH, VIDEO_HEIGHT);   //数据转换
 
-    sleep(1);
+    //sleep(1);
 
     screen->setPixmap(192, 60, img);
 
-    sleep(1);
+    //sleep(1);
 
     vd->unget_frame();
 }
@@ -123,10 +124,76 @@ int showvideo::convert_yuv_rgb_buffer(unsigned char *yuv, unsigned char *rgb,\
 }
 
 
+//==================================================================
+
+void showvideo::video_yuv_to_rgb_pixel(unsigned char **pixel, int y, int u, int v)
+{
+    int rgbdata[3];
+
+    #define R   0
+    #define G   1
+    #define B   2
+
+    /*
+    * YUV与RGB相互转换的公式如下（RGB取值范围均为0-255）
+    * Y = 0.299R + 0.587G + 0.114B
+    * U = -0.147R - 0.289G + 0.436B
+    * V = 0.615R - 0.515G - 0.100B
+    * R = Y + 1.14V
+    * G = Y - 0.39U - 0.58V
+    * B = Y + 2.03U
+    */
+
+    rgbdata[R] = y + (v - 128) + (((v - 128) * 104 ) >> 8);
+    rgbdata[G] = y - (((u - 128) * 89) >> 8) - (((v - 128) * 183) >> 8);
+    rgbdata[B] = y + (u - 128) + (((u - 128) * 199) >> 8);
+
+    if (rgbdata[R] > 255)  rgbdata[R] = 255;
+    if (rgbdata[R] < 0)    rgbdata[R] = 0;
+    if (rgbdata[G] > 255)  rgbdata[G] = 255;
+    if (rgbdata[G] < 0)    rgbdata[G] = 0;
+    if (rgbdata[B] > 255)  rgbdata[B] = 255;
+    if (rgbdata[B] < 0)    rgbdata[B] = 0;
+
+
+    (*pixel)[0] = rgbdata[R];
+    (*pixel)[1] = rgbdata[G];
+    (*pixel)[2] = rgbdata[B];
+
+    (*pixel) +=3;
+}
 
 
 
+void showvideo::video_yuyv_to_rgb24(const void *yuyv, void *rgb, unsigned int width, unsigned int height)
+{
+    int yuvdata[4];
+    unsigned char *yuv_buf;
+    unsigned int i, j;
 
+    #define Y0  0
+    #define U   1
+    #define Y1  2
+    #define V   3
+
+    yuv_buf = (unsigned char *)yuyv;
+    if(rgb != NULL)
+    {
+        for(i = 0; i < height * 2; i++){
+            for(j = 0; j < width; j+= 4){
+                /* get Y0 U Y1 V */
+                yuvdata[Y0] = *(yuv_buf + i * width + j + 0);
+                yuvdata[U]  = *(yuv_buf + i * width + j + 1);
+                yuvdata[Y1] = *(yuv_buf + i * width + j + 2);
+                yuvdata[V]  = *(yuv_buf + i * width + j + 3);
+
+                video_yuv_to_rgb_pixel((unsigned char **)(&rgb), yuvdata[Y0], yuvdata[U], yuvdata[V]);
+                video_yuv_to_rgb_pixel((unsigned char **)(&rgb), yuvdata[Y1], yuvdata[U], yuvdata[V]);
+            }
+        }
+    }
+
+}
 
 
 
