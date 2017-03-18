@@ -27,6 +27,40 @@ DoING 基于嵌入式的视觉运动控制
 ### Tree
 
 
+    .
+    ├── app
+    │   ├── app.pro
+    │   └── main.cpp
+    ├── bin
+    │   
+    ├── include
+    │   ├── c1image.h
+    │   ├── c1painter.h
+    │   ├── c1screen.h
+    │   ├── codec
+    │   │   ├── e1bitmap.cpp
+    │   │   └── e1bitmap.h
+    │   └── smdkv210
+    │       ├── linuxfbscreen.h
+    │       ├── showvideo.h
+    │       └── videodevice.h
+    ├── lib
+    │   
+    ├── src
+    │   ├── c1image.cpp
+    │   ├── c1painter.cpp
+    │   ├── c1screen.cpp
+    │   ├── smdkv210
+    │   │   ├── linuxfbscreen.cpp
+    │   │   ├── showvideo.cpp
+    │   │   └── videodevice.cpp
+    │   └── src.pro
+    │ 
+    ├── complex.pro
+    ├── complex.pro.user
+    └── README.md
+
+
 ### License
 
 

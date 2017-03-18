@@ -7,13 +7,30 @@
 //#include <smdkv210/videodevice.h>
 
 #include <smdkv210/showvideo.h>
+#include "Image_001.h"
+
+#include "opencv2/core.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 
 using namespace std;
+using namespace cv;
 
 int main()
 {
+    //将位图文件转成Mat类型对象
+    Mat img(1024, 600, CV_8UC3, (char *)Image_001);
 
-#if 1
+    //利用opencv相关对Mat类型对象进行图像处理
+    sleep(1);
+
+    //提取处理后的Mat类型对象的像素数据
+
+
+    //显示
+
+
+#if 0
     //视频显示测试
     showvideo sv;
 
