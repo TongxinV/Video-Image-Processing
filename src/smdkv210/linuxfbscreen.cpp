@@ -139,3 +139,7 @@ void LinuxFbScreen::setPixmap(unsigned int x, unsigned int y, C1Image *i)
 
     painter->_setPixmap(x, y, i);
 }
+
+
+
+

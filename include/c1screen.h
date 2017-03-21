@@ -20,6 +20,8 @@ public:
     virtual bool initDevice() = 0;
     virtual void shutdownDevice() { }
 
+    unsigned int *get_displayspace_point();
+
 
 };
 

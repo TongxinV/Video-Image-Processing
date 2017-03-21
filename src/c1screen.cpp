@@ -15,3 +15,7 @@ C1Screen::~C1Screen()
 }
 
 
+unsigned int *C1Screen::get_displayspace_point()
+{
+    return displaySpace ? displaySpace:NULL;
+}
