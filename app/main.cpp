@@ -7,11 +7,11 @@
 
 
 #include <smdkv210/showvideo.h>
-#include "IM_320_240.hpp"
+#include "IM_320_240.h"
 
 #include "opencv2/core.hpp"
 //#include "opencv2/highgui/highgui.hpp"
-//#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 
 using namespace std;
 using namespace cv;
@@ -28,75 +28,43 @@ Mat imageGaussian;
 
 int main()
 {
-    //将位图数据直接转成Mat类型对象
-    Mat imageSource(320, 240, CV_8UC3, (char *)IM_320_240);
-
-    //利用opencv相关对Mat类型对象进行图像处理
-    //ConvertRGB2GRAY(imageSource,imageGray); //RGB转换为灰度图
-
-    //提取处理后的Mat类型对象的像素数据
-
-    for( size_t nrow = 0; nrow < 1; nrow++)
-     {
-        for(size_t ncol = 0; ncol < imageSource.cols; ncol++)
-        {
-            Vec3b bgr = imageSource.at<Vec3b>(nrow,ncol);
-            cout   << "("<<bgr.val[0]<<","
-                         <<bgr.val[1]<<","
-                         <<bgr.val[2]<<")";
-        }
-        cout << endl;
-     }
-    //显示
     LinuxFbScreen screen(1024, 600);
     screen.initDevice();
 
+    //============================
 
-#if 0
+    Mat imageSource(240, 320, CV_8UC3, (uchar *)IM_320_240);//将位图数据直接转成Mat类型对象
 
-    unsigned int *p = screen.get_displayspace_point();
+    uchar* data = NULL;
 
-    for( unsigned int nrow = 0; nrow < (unsigned int)imageSource.rows; nrow++)
-    {
-        uchar* data = imageSource.ptr<uchar>(nrow);
+    data = imageSource.data;//提取处理后的Mat类型对象的像素数据
+    screen.showImageBGR(320, 240, data);
 
-        for(unsigned int ncol = 0; ncol < (unsigned int)imageSource.cols * imageSource.channels(); ncol++)
-        {
-            *(p + nrow * 1024 + ncol) = data[ncol];
-        }
-    }
-#endif
+    ConvertRGB2GRAY(imageSource,imageGray); //RGB转换为灰度图
+
+    data = imageGray.data;//提取处理后的Mat类型对象的像素数据
+    screen.showImageGray(320, 240, data);
 
 
-#if 0
-    unsigned int *p = screen.get_displayspace_point();
-
-    for( unsigned int nrow = 0; nrow < (unsigned int)imageGray.rows; nrow++)
-    {
-        uchar* data = imageGray.ptr<uchar>(nrow);
-
-        for(unsigned int ncol = 0; ncol < (unsigned int)imageGray.cols * imageGray.channels(); ncol++)
-        {
-            *(p + nrow * 1024 + ncol) = data[ncol];
-        }
-    }
-#endif
-
-
-
-    //C1Image *img = new C1Image;
-
-    //img->data =
-
-    //img->loadFromData(320, 240, pdata);
-
-    //screen.setPixmap(352, 180, img);
-
-    //img->freeData();
+    //=============================
 
     sleep(3);
     screen.shutdownDevice();
 
+    /*
+
+
+    uchar RGB24Pixmap[256];          //映射表，规定了变换前后灰度值的对应关系
+    for (int i=0;i<256;++i)
+    {
+        RGB24Pixmap[i]=i;
+    }
+
+    for(int i = 0; i < 10; ++i){
+        printf("imageSource.ptr<uchar>(0)[%d] = %x.\n", i, imageSource.ptr<uchar>(0)[i]);
+    }
+
+*/
 
 #if 0
     //数据流直接转Mat对象测试
@@ -118,7 +86,6 @@ int main()
     cout << img;
 #endif
 
-
 #if 0
     //视频显示测试
     showvideo sv;
@@ -129,7 +96,6 @@ int main()
     }
 
 #endif
-
 
 #if 0
     //videodevice 测试
@@ -165,9 +131,11 @@ int main()
     sleep(3);
     screen.shutdownDevice();
 #endif
+
     cout << "Hello World!" << endl;
     return 0;
 }
+
 
 
 //******************灰度转换函数*************************

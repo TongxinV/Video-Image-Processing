@@ -26,7 +26,7 @@ public:
 
     void _initPainter(unsigned int *const displaySpace, unsigned int w, unsigned int h);
     void _setPixmap(unsigned int x, unsigned int y, const C1Image *img);      //在(x,y)显示数据
-    void Draw_Test();
+    void _draw_img_bgr(unsigned int iw, unsigned int ih, unsigned char *data);
 };
 
 

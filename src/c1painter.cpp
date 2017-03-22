@@ -48,17 +48,29 @@ void C1Painter::_setPixmap(unsigned int x, unsigned int y, const C1Image *img)
 
 }
 
-void C1Painter::Draw_Test()
+void C1Painter::_draw_img_bgr(unsigned int iw, unsigned int ih, unsigned char *data)
 {
     unsigned int *p = pStar;
 
-    unsigned int x, y;
+    const unsigned char * Byte =data;
 
-    for (y=0; y<Height; y++)
+    printf("========= draw start ==========.\n");
+    printf("const unsigned char * Byte = %p.\n", Byte);
+    printf("unsigned int iw = %d.\n", iw);
+    printf("unsigned int ih = %d.\n", ih);
+
+    unsigned int i,j;
+    unsigned int cnt;
+
+    for (i=0; i<ih; i++)
     {
-        for (x=0; x<Width; x++)
+        for (j=0; j<iw; j++)
         {
-            *(p + y * Width + x) = 0xffffffff;
+            cnt = iw*i+j;
+            cnt*= 3;
+            *(p + i * Width + j) = ((Byte[cnt+2] << 16) | (Byte[cnt+1] << 8) | (Byte[cnt+0] << 0));//byte[0-2]:R G B
         }
     }
+
+    printf("========= draw end  ==========.\n");
 }

@@ -18,7 +18,7 @@ DEPENDPATH  += /opt/lib-opencv/include
 # 要么导出环境变量 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/lib-opencv/lib 然后只要
 # LIBS += -lopencv_core
 # 要么添加相应链接库路径
-LIBS += -L/opt/lib-opencv/lib/ -lopencv_core
+LIBS += -L/opt/lib-opencv/lib -lopencv_core -lopencv_imgproc
 
 
 
@@ -28,4 +28,4 @@ LIBS += -L/opt/lib-opencv/lib/ -lopencv_core
 SOURCES += main.cpp \
 
 HEADERS += \
-    IM_320_240.hpp
+    IM_320_240.h

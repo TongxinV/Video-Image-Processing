@@ -140,6 +140,15 @@ void LinuxFbScreen::setPixmap(unsigned int x, unsigned int y, C1Image *i)
     painter->_setPixmap(x, y, i);
 }
 
+void LinuxFbScreen::showImageBGR(unsigned int iw, unsigned int ih, unsigned char *data)
+{
 
+    painter->_draw_img_bgr(iw, ih, data);
+}
 
+void LinuxFbScreen::showImageGray(unsigned int iw, unsigned int ih, unsigned char *data)
+{
+
+    painter->_draw_img_bgr(iw, ih, data);
+}
 

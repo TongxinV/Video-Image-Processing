@@ -42,16 +42,12 @@ void showvideo::show()
         printf("get frame failed.\n");
     }
 
-    //sleep(1);
-
     video_yuyv_to_rgb24(p, pp, VIDEO_WIDTH, VIDEO_HEIGHT);
     //convert_yuv_rgb_buffer(p, pp, VIDEO_WIDTH, VIDEO_HEIGHT);   //数据转换
 
-    //sleep(1);
 
     screen->setPixmap(192, 60, img);
 
-    //sleep(1);
 
     vd->unget_frame();
 }
