@@ -7,24 +7,20 @@
 
 
 #include <smdkv210/showvideo.h>
-#include "IM_320_240.h"
+#include "IM_320_240.hpp"
 
 #include "opencv2/core.hpp"
-//#include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
 using namespace std;
 using namespace cv;
 
-//******************灰度转换函数*************************
-//第一个参数image输入的彩色RGB图像；
-//第二个参数imageGray是转换后输出的灰度图像；
-//*************************************************************
+//******************灰度转换函数**********************
 void ConvertRGB2GRAY(const Mat &image,Mat &imageGray);
 
 Mat imageSource;
 Mat imageGray;
-Mat imageGaussian;
+Mat imageCanny;
 
 int main()
 {
@@ -37,54 +33,23 @@ int main()
 
     uchar* data = NULL;
 
-    data = imageSource.data;//提取处理后的Mat类型对象的像素数据
+    data = imageSource.data; //提取处理后的Mat类型对象的像素数据
     screen.showImageBGR(320, 240, data);
 
     ConvertRGB2GRAY(imageSource,imageGray); //RGB转换为灰度图
 
-    data = imageGray.data;//提取处理后的Mat类型对象的像素数据
+    data = imageGray.data;   //提取处理后的Mat类型对象的像素数据
     screen.showImageGray(320, 240, data);
 
+    Canny(imageGray, imageCanny, 100, 300, 3);//边缘检测
+
+    data = imageCanny.data;  //提取处理后的Mat类型对象的像素数据
+    screen.showImageGray(320, 240, data);
 
     //=============================
 
     sleep(3);
     screen.shutdownDevice();
-
-    /*
-
-
-    uchar RGB24Pixmap[256];          //映射表，规定了变换前后灰度值的对应关系
-    for (int i=0;i<256;++i)
-    {
-        RGB24Pixmap[i]=i;
-    }
-
-    for(int i = 0; i < 10; ++i){
-        printf("imageSource.ptr<uchar>(0)[%d] = %x.\n", i, imageSource.ptr<uchar>(0)[i]);
-    }
-
-*/
-
-#if 0
-    //数据流直接转Mat对象测试
-
-    uchar matrix[90] = {
-
-        0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
-        0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
-        0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
-        0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
-        0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
-        0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff
-
-    };
-    //将位图数据直接转成Mat类型对象
-    //Mat img(1024, 600, CV_8UC3, (char *)Image_001);
-    Mat img(5, 6, CV_8UC3, (char *)matrix);
-
-    cout << img;
-#endif
 
 #if 0
     //视频显示测试
@@ -141,7 +106,7 @@ int main()
 //******************灰度转换函数*************************
 //第一个参数image输入的彩色RGB图像；
 //第二个参数imageGray是转换后输出的灰度图像；
-//*************************************************************
+//*****************************************************
 void ConvertRGB2GRAY(const Mat &image,Mat &imageGray)
 {
     if(!image.data||image.channels()!=3)
@@ -153,11 +118,17 @@ void ConvertRGB2GRAY(const Mat &image,Mat &imageGray)
     uchar *pointImageGray=imageGray.data;
     int stepImage=image.step;
     int stepImageGray=imageGray.step;
-    for(int i=0;i<imageGray.rows;i++)
+
+    int i,j;
+    int cnt;
+
+    for(i=0;i<imageGray.rows;i++)
     {
-        for(int j=0;j<imageGray.cols;j++)
+        for(j=0;j<imageGray.cols;j++)
         {
-            pointImageGray[i*stepImageGray+j]=0.114*pointImage[i*stepImage+3*j]+0.587*pointImage[i*stepImage+3*j+1]+0.299*pointImage[i*stepImage+3*j+2];
+            //pointImageGray[i*stepImageGray+j]=0.114*pointImage[i*stepImage+3*j]+0.587*pointImage[i*stepImage+3*j+1]+0.299*pointImage[i*stepImage+3*j+2];
+            cnt = i*stepImage+3*j;
+            pointImageGray[i*stepImageGray+j]=(76*pointImage[cnt+0]+150*pointImage[cnt+1]+30*pointImage[cnt+2]) >> 8;
         }
     }
 }

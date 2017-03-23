@@ -149,6 +149,6 @@ void LinuxFbScreen::showImageBGR(unsigned int iw, unsigned int ih, unsigned char
 void LinuxFbScreen::showImageGray(unsigned int iw, unsigned int ih, unsigned char *data)
 {
 
-    painter->_draw_img_bgr(iw, ih, data);
+    painter->_draw_img_gray(iw, ih, data);
 }
 

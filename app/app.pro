@@ -28,4 +28,4 @@ LIBS += -L/opt/lib-opencv/lib -lopencv_core -lopencv_imgproc
 SOURCES += main.cpp \
 
 HEADERS += \
-    IM_320_240.h
+    IM_320_240.hpp
