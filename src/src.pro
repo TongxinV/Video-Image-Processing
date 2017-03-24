@@ -17,7 +17,8 @@ SOURCES += \
     c1image.cpp \
     ../include/codec/e1bitmap.cpp \
     smdkv210/videodevice.cpp \
-    smdkv210/showvideo.cpp
+    smdkv210/showvideo.cpp \
+    smdkv210/touchdevice.cpp
 HEADERS += \
     smdkv210/linuxfbscreen.h \
     ../include/c1screen.h \
@@ -25,4 +26,5 @@ HEADERS += \
     ../include/c1image.h \
     ../include/codec/e1bitmap.h \
     ../include/smdkv210/videodevice.h \
-    ../include/smdkv210/showvideo.h
+    ../include/smdkv210/showvideo.h \
+    ../include/smdkv210/touchdevice.h

@@ -7,6 +7,7 @@
 
 
 #include <smdkv210/showvideo.h>
+#include <smdkv210/touchdevice.h>
 #include "IM_320_240.hpp"
 
 #include "opencv2/core.hpp"
@@ -50,6 +51,10 @@ int main()
 
     sleep(3);
     screen.shutdownDevice();
+
+
+    touchdevice tc;
+    tc.input();
 
 #if 0
     //视频显示测试
