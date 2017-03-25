@@ -27,7 +27,12 @@ public:
     showvideo();
     virtual ~showvideo();
 
+    void proc();
     void show();
+
+    LinuxFbScreen * inscreen();
+    unsigned char * data();
+
     int convert_yuv_to_rgb_pixel(int y, int u, int v);
     int convert_yuv_rgb_buffer(unsigned char *yuv, unsigned char *rgb,\
                        unsigned int width, unsigned int height);

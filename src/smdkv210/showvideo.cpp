@@ -34,7 +34,7 @@ showvideo::showvideo()
 }
 
 
-void showvideo::show()
+void showvideo::proc()
 {
     int iRet = -1;
     iRet = vd->get_frame((void * *)&p, &len);  //获取视频采集的初始数据
@@ -46,11 +46,28 @@ void showvideo::show()
     //convert_yuv_rgb_buffer(p, pp, VIDEO_WIDTH, VIDEO_HEIGHT);   //数据转换
 
 
-    screen->setPixmap(192, 60, img);
+    //screen->setPixmap(192, 60, img);
 
 
     vd->unget_frame();
 }
+
+void showvideo::show()
+{
+    screen->setPixmap(192, 60, img);
+}
+
+
+LinuxFbScreen * showvideo::inscreen()
+{
+    return screen;
+}
+
+unsigned char * showvideo::data()
+{
+    return pp;
+}
+
 
 showvideo::~showvideo()
 {
@@ -59,6 +76,9 @@ showvideo::~showvideo()
 
     screen->shutdownDevice();
 }
+
+
+
 
 
 //yuv格式转换为rgb格式的算法处理函数

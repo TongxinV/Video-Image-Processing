@@ -40,8 +40,6 @@ LinuxFbScreenPrivate::~LinuxFbScreenPrivate()
 
 void LinuxFbScreenPrivate::openTty()
 {
-    printf("1.\n");
-    printf("1.\n");
     const char *const devs[] = {"/dev/fb0", "/dev/fb1", "/dev/fb2", 0};
 
     for (const char * const *dev = devs; *dev; ++dev) {
@@ -52,7 +50,6 @@ void LinuxFbScreenPrivate::openTty()
     }
 
     if (ttyfd == -1)
-        printf("2.\n");
         return;
 }
 
@@ -140,10 +137,9 @@ void LinuxFbScreen::setPixmap(unsigned int x, unsigned int y, C1Image *i)
     painter->_setPixmap(x, y, i);
 }
 
-void LinuxFbScreen::showImageBGR(unsigned int iw, unsigned int ih, unsigned char *data)
+void LinuxFbScreen::showImageRGB(unsigned int iw, unsigned int ih, unsigned char *data)
 {
-
-    painter->_draw_img_bgr(iw, ih, data);
+    painter->_draw_img_rgb(iw, ih, data);
 }
 
 void LinuxFbScreen::showImageGray(unsigned int iw, unsigned int ih, unsigned char *data)

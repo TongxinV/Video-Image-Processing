@@ -48,7 +48,7 @@ void C1Painter::_setPixmap(unsigned int x, unsigned int y, const C1Image *img)
 
 }
 
-void C1Painter::_draw_img_bgr(unsigned int iw, unsigned int ih, unsigned char *data)
+void C1Painter::_draw_img_rgb(unsigned int iw, unsigned int ih, unsigned char *data)
 {
     unsigned int *p = pStar;
 
@@ -67,7 +67,7 @@ void C1Painter::_draw_img_bgr(unsigned int iw, unsigned int ih, unsigned char *d
         for (j=0; j<iw; j++)
         {
             cnt = iw*3*i+3*j;
-            *(p + i * Width + j) = ((Byte[cnt+2] << 16) | (Byte[cnt+1] << 8) | (Byte[cnt+0] << 0));//byte[0-2]:R G B
+            *(p + i * Width + j) = ((Byte[cnt+0] << 16) | (Byte[cnt+1] << 8) | (Byte[cnt+2] << 0));//byte[0-2]:R G B
         }
     }
 

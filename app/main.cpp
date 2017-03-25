@@ -1,11 +1,6 @@
 #include <iostream>
 #include <unistd.h>
 
-
-#include <smdkv210/linuxfbscreen.h>
-#include <c1image.h>
-
-
 #include <smdkv210/showvideo.h>
 #include <smdkv210/touchdevice.h>
 #include "IM_320_240.hpp"
@@ -23,8 +18,41 @@ Mat imageSource;
 Mat imageGray;
 Mat imageCanny;
 
+int key = 0;
+
 int main()
 {
+    showvideo sv;
+
+    for(int i = 0; i < 100; ++i){
+        sv.proc();
+        sv.show();
+
+        if(i > 10){
+            Mat imageSource(480, 640, CV_8UC3, sv.data());
+
+            uchar* data = NULL;
+
+            data = imageSource.data; //提取处理后的Mat类型对象的像素数据
+            sv.inscreen()->showImageRGB(640, 480, data);
+
+            ConvertRGB2GRAY(imageSource,imageGray); //RGB转换为灰度图
+
+            data = imageGray.data;   //提取处理后的Mat类型对象的像素数据
+            sv.inscreen()->showImageGray(640, 480, data);
+
+            Canny(imageGray, imageCanny, 100, 300, 3);//边缘检测
+
+            data = imageCanny.data;  //提取处理后的Mat类型对象的像素数据
+            sv.inscreen()->showImageGray(640, 480, data);
+
+            break;
+        }
+    }
+
+
+#if 0
+    //opencv测试
     LinuxFbScreen screen(1024, 600);
     screen.initDevice();
 
@@ -55,14 +83,16 @@ int main()
 
     touchdevice tc;
     tc.input();
+#endif
+
 
 #if 0
     //视频显示测试
     showvideo sv;
 
-    for(int i = 0; i < 1000; ++i){
+    for(int i = 0; i < 100; ++i){
+        sv.proc();
         sv.show();
-        //usleep(100);
     }
 
 #endif
