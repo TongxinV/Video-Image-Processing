@@ -52,7 +52,7 @@ void showvideo::proc()
     vd->unget_frame();
 }
 
-void showvideo::show()
+void showvideo::showVideostream()
 {
     screen->setPixmap(192, 60, img);
 }

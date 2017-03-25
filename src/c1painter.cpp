@@ -50,7 +50,7 @@ void C1Painter::_setPixmap(unsigned int x, unsigned int y, const C1Image *img)
 
 void C1Painter::_draw_img_rgb(unsigned int iw, unsigned int ih, unsigned char *data)
 {
-    unsigned int *p = pStar;
+    unsigned int *p = pStar + 60*Width + 192;
 
     const unsigned char * Byte =data;
 
@@ -77,7 +77,7 @@ void C1Painter::_draw_img_rgb(unsigned int iw, unsigned int ih, unsigned char *d
 
 void C1Painter::_draw_img_gray(unsigned int iw, unsigned int ih, unsigned char *data)
 {
-    unsigned int *p = pStar;
+    unsigned int *p = pStar + 60*Width + 192;
 
     const unsigned char * Byte =data;
 

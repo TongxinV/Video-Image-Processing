@@ -4,12 +4,19 @@
 
 #include <linux/input.h>
 
+enum INPUTEvent
+{
+    EV_UNKNOWN,
+    EV_IMGPROC,
+    EV_VDOSHOW,
+    EV_KEEPON
+};
 
 class touchdevice
 {
 private:
-    int fd;
-    struct input_event event;
+    static int fd;
+    static struct input_event event;
 
 public:
 
@@ -20,7 +27,8 @@ public:
     void open_device();
     void close_device();
 
-    void input();
+    static void input();
+    static int  index();
 
 };
 

@@ -109,8 +109,8 @@ bool LinuxFbScreen::initDevice()
 #endif
 
     // Step 3 : mmap
-    unsigned long len = vinfo.xres_virtual * vinfo.yres_virtual * vinfo.bits_per_pixel / 8;
-    displaySpace = (unsigned int *)mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, d_ptr->ttyfd, 0);
+    displaylenth = vinfo.xres_virtual * vinfo.yres_virtual * vinfo.bits_per_pixel / 8;
+    displaySpace = (unsigned int *)mmap(NULL, displaylenth, PROT_READ | PROT_WRITE, MAP_SHARED, d_ptr->ttyfd, 0);
     if (NULL == displaySpace){
         perror("mmap");
         return false;
@@ -128,6 +128,8 @@ bool LinuxFbScreen::initDevice()
 
 void LinuxFbScreen::shutdownDevice()
 {
+    munmap(displaySpace, displaylenth);
+
     d_ptr->closeTty();
 }
 

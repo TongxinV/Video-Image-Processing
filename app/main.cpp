@@ -1,9 +1,10 @@
 #include <iostream>
 #include <unistd.h>
+#include <pthread.h>
 
 #include <smdkv210/showvideo.h>
 #include <smdkv210/touchdevice.h>
-#include "IM_320_240.hpp"
+//#include "IM_320_240.hpp"
 
 #include "opencv2/core.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
@@ -14,42 +15,134 @@ using namespace cv;
 //******************灰度转换函数**********************
 void ConvertRGB2GRAY(const Mat &image,Mat &imageGray);
 
-Mat imageSource;
-Mat imageGray;
-Mat imageCanny;
 
-int key = 0;
+#define C1VDOSHOW 0
+#define C1IMGPROC 1
+#define C1KEEPON  2
 
-int main()
+int eventIndex  = 0;
+//******************触摸输入线程**********************
+
+pthread_mutex_t tch_mutex;
+
+void cleanup(void *arg)
 {
-    showvideo sv;
+    printf("cleanup: %s\n", (char *)arg);
+}
 
-    for(int i = 0; i < 100; ++i){
-        sv.proc();
-        sv.show();
+void *thread_touchinput(void *arg)
+{
+    pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+    pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED,NULL);
 
-        if(i > 10){
-            Mat imageSource(480, 640, CV_8UC3, sv.data());
+    pthread_cleanup_push(cleanup, (char *)"Touch Input Event");
+    printf("%p.\n", arg);
 
-            uchar* data = NULL;
+    touchdevice tc;
+    while(1){
+        tc.input();
 
-            data = imageSource.data; //提取处理后的Mat类型对象的像素数据
-            sv.inscreen()->showImageRGB(640, 480, data);
-
-            ConvertRGB2GRAY(imageSource,imageGray); //RGB转换为灰度图
-
-            data = imageGray.data;   //提取处理后的Mat类型对象的像素数据
-            sv.inscreen()->showImageGray(640, 480, data);
-
-            Canny(imageGray, imageCanny, 100, 300, 3);//边缘检测
-
-            data = imageCanny.data;  //提取处理后的Mat类型对象的像素数据
-            sv.inscreen()->showImageGray(640, 480, data);
-
-            break;
+        switch(tc.index())
+        {
+            case EV_UNKNOWN:
+                printf("illegal input!\n");break;
+            case EV_IMGPROC:
+                printf("eventIndex = C1IMGPROC.\n");
+                pthread_mutex_lock(&tch_mutex);
+                eventIndex = C1IMGPROC;
+                pthread_mutex_unlock(&tch_mutex);break;
+            case EV_VDOSHOW:
+                printf("eventIndex = C1VDOSHOW.\n");
+                pthread_mutex_lock(&tch_mutex);
+                eventIndex = C1VDOSHOW;
+                pthread_mutex_unlock(&tch_mutex);break;
+            default:printf("error.\n");
         }
     }
 
+    pthread_cleanup_pop(0);
+
+    pthread_exit(NULL);
+
+    return NULL;
+}
+
+Mat imageSource;
+Mat imageGray;
+//Mat imageCanny;
+
+
+int main()
+{
+    pthread_t id = -1;
+
+    pthread_mutex_init(&tch_mutex, NULL);
+
+    if(-1 != pthread_create(&id, NULL, thread_touchinput, NULL)){
+        cout << "Create thread success! " << endl;
+    }
+
+    showvideo sv;
+
+    for(int i = 0; i < 1000; ++i){
+        sv.proc();
+
+        if(C1IMGPROC == eventIndex)
+        {
+            printf("************** Image Proc ... **************\n");
+
+            uchar* data = sv.data(); //提取摄像头处理后的RGB格式像素数据
+
+            imageSource = Mat(480, 640, CV_8UC3, data).clone();//用数据初始化矩阵(浅拷贝)，即没有另外开辟内存
+
+            //data = imageSource.data; //提取处理后的Mat类型对象的像素数据
+            //sv.inscreen()->showImageRGB (640, 480, imageSource.data);
+
+            //Mat imageGray(480, 640, CV_8UC1, 0);    //这种初始化方式另外开辟了内存
+
+            ConvertRGB2GRAY(imageSource,imageGray); //RGB转换为灰度图
+
+            //data = imageGray.data;   //提取处理后的Mat类型对象的像素数据
+            //sv.inscreen()->showImageGray(640, 480, data);
+
+
+            /**
+             * 一调用Canny函数执行几次之后就会触发V4L2驱动相关的错误
+             */
+            cv::Canny(imageGray, imageGray, 100, 300, 3);     //边缘检测
+
+            //data = imageGray.data;   //提取处理后的Mat类型对象的像素数据
+            sv.inscreen()->showImageGray(640, 480, imageGray.data);
+
+            eventIndex = C1KEEPON;
+
+        }
+        else if(C1KEEPON == eventIndex)
+        {
+            //不处理，即保持当前状态
+        }
+        else if(C1VDOSHOW == eventIndex)
+        {
+            sv.proc();
+            sv.showVideostream();
+        }
+        else
+        {
+
+        }
+    }
+
+    printf("cancel thread forced.\n");
+
+    pthread_cancel(id);
+
+    if(pthread_join(id, NULL) != 0){
+        printf("pthread_join error.  \n");
+    }else{
+        printf("pthread_join success.\n");
+    }
+
+    pthread_mutex_destroy(&tch_mutex);
 
 #if 0
     //opencv测试

@@ -28,7 +28,7 @@ public:
     virtual ~showvideo();
 
     void proc();
-    void show();
+    void showVideostream();
 
     LinuxFbScreen * inscreen();
     unsigned char * data();

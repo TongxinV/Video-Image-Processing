@@ -12,9 +12,10 @@
 
 #define DEVICE_TOUCH  	"/dev/input/event2"
 
+int touchdevice::fd = -1;
+struct input_event touchdevice::event;
 
 touchdevice::touchdevice()
-    :fd(-1)
 {
     open_device();
 }
@@ -58,15 +59,36 @@ void touchdevice::input()
         perror("read");
         return ;
     }
-
+#if 0
     printf("-------------------------\n");
     printf("type: %hd\n", event.type);
     printf("code: %hd\n", event.code);
     printf("value: %d\n", event.value);
     printf("\n");
+#endif
 }
 
+int touchdevice::index()
+{
+    //#define  EV_UNKNOWN 0
+    //#define  EV_IMGPROC 1
+    //#define  EV_VDOSHOW 2
 
+    if ((event.type == EV_ABS) && (event.code == ABS_X))
+    {
+        if ((event.value > 200) && (event.value < 824))
+        {
+            return EV_IMGPROC;
+        }
+
+        if ((event.value > 824) && (event.value <1024))
+        {
+            return EV_VDOSHOW;
+        }
+    }
+
+    return EV_UNKNOWN;
+}
 
 
 

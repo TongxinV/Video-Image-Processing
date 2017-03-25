@@ -12,6 +12,7 @@ protected:
     unsigned int physWidth;
     unsigned int physHeight;
 
+    unsigned long  displaylenth;
     unsigned int * displaySpace;
 public:
     C1Screen(unsigned int w, unsigned int h);

@@ -40,7 +40,13 @@ int videodevice::open_device()
 
 
 int videodevice::close_device()
-{ 
+{
+    for(unsigned int i =0; i < this->iCount; ++i){
+        munmap(buffers[i].start, buffers[i].length);
+    }
+
+    free(buffers);
+
     if( -1 == close(this->fd))
         return -1;
     return 0;
