@@ -72,9 +72,7 @@ DoING 基于嵌入式的视觉运动控制
 **openCV处理图**:
 
 
-
-
-
+![](https://raw.githubusercontent.com/TongxinV/Video-Image-Processing/master/doc/assets/opencv%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%BB%93%E6%9E%9C.png)
     
     
 ### License
