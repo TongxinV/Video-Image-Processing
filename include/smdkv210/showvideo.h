@@ -29,6 +29,7 @@ public:
 
     void proc();
     void showVideostream();
+    void showImagesGray (unsigned char * p);
 
     LinuxFbScreen * inscreen();
     unsigned char * data();

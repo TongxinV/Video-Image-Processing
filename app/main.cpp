@@ -69,7 +69,6 @@ void *thread_touchinput(void *arg)
 
 Mat imageSource;
 Mat imageGray;
-//Mat imageCanny;
 
 
 int main()
@@ -91,28 +90,22 @@ int main()
         {
             printf("************** Image Proc ... **************\n");
 
-            uchar* data = sv.data(); //提取摄像头处理后的RGB格式像素数据
+            imageSource = Mat(480, 640, CV_8UC3, sv.data()).clone(); //用数据初始化矩阵，即没有另外开辟内存
 
-            imageSource = Mat(480, 640, CV_8UC3, data).clone();//用数据初始化矩阵(浅拷贝)，即没有另外开辟内存
+            ConvertRGB2GRAY(imageSource,imageGray);             //RGB转换为灰度图
 
-            //data = imageSource.data; //提取处理后的Mat类型对象的像素数据
-            //sv.inscreen()->showImageRGB (640, 480, imageSource.data);
-
-            //Mat imageGray(480, 640, CV_8UC1, 0);    //这种初始化方式另外开辟了内存
-
-            ConvertRGB2GRAY(imageSource,imageGray); //RGB转换为灰度图
-
-            //data = imageGray.data;   //提取处理后的Mat类型对象的像素数据
-            //sv.inscreen()->showImageGray(640, 480, data);
-
+            Canny(imageGray, imageGray, 100, 300, 3);       //边缘检测
 
             /**
              * 一调用Canny函数执行几次之后就会触发V4L2驱动相关的错误
+             * usb 1-1: USB disconnect, address 2
+             * uvcvideo: Failed to resubmit video URB (-19).
+             * uvcvideo: Failed to resubmit video URB (-19).
+             * uvcvideo: Failed to resubmit video URB (-19).
+             * ...
+             * 把显示边缘检测后的灰度图像 函数注释掉之后就不会
              */
-            cv::Canny(imageGray, imageGray, 100, 300, 3);     //边缘检测
-
-            //data = imageGray.data;   //提取处理后的Mat类型对象的像素数据
-            sv.inscreen()->showImageGray(640, 480, imageGray.data);
+            //sv.showImagesGray(imageGray.data);
 
             eventIndex = C1KEEPON;
 
@@ -120,16 +113,14 @@ int main()
         else if(C1KEEPON == eventIndex)
         {
             //不处理，即保持当前状态
+            printf("eventIndex = C1KEEPON.\n");
+            sleep(1);
         }
         else if(C1VDOSHOW == eventIndex)
         {
-            sv.proc();
             sv.showVideostream();
         }
-        else
-        {
 
-        }
     }
 
     printf("cancel thread forced.\n");

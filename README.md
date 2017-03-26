@@ -61,6 +61,22 @@ DoING 基于嵌入式的视觉运动控制
     └── README.md
 
 
+**视频显示效果**：
+
+> gif图片有点大加载前会卡，而不是视频卡！！！请注意让它先加载完~
+
+
+![](https://raw.githubusercontent.com/TongxinV/Video-Image-Processing/master/doc/assets/P003cc.gif)
+
+    
+**openCV处理图**:
+
+
+
+
+
+    
+    
 ### License
 
 

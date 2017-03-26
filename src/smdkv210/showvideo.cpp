@@ -57,6 +57,11 @@ void showvideo::showVideostream()
     screen->setPixmap(192, 60, img);
 }
 
+void showvideo::showImagesGray (unsigned char * p)
+{
+    screen->showImageGray(640, 480, p);
+}
+
 
 LinuxFbScreen * showvideo::inscreen()
 {
@@ -150,7 +155,7 @@ void showvideo::video_yuv_to_rgb_pixel(unsigned char **pixel, int y, int u, int 
     #define G   1
     #define B   2
 
-    /*
+   /*
     * YUV与RGB相互转换的公式如下（RGB取值范围均为0-255）
     * Y = 0.299R + 0.587G + 0.114B
     * U = -0.147R - 0.289G + 0.436B
