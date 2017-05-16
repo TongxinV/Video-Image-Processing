@@ -77,9 +77,7 @@ void *thread_touchinput(void *arg)
 
 Mat imageSource;
 Mat imageGray;
-Mat imageCanny;
-Mat imageBlur;
-Mat imageBinary;
+
 
 int main()
 {
@@ -96,7 +94,7 @@ int main()
     /************** 视频采集处理 **************/
     showvideo sv;
 
-    for(int i = 0; i < 500; ++i){
+    for(int i = 0; i < 1000; ++i){
         sv.proc();
 
         if(C1IMGPROC == eventIndex)
@@ -107,21 +105,7 @@ int main()
 
             ConvertRGB2GRAY(imageSource,imageGray);                 //RGB转换为灰度图
 
-            Canny(imageGray, imageCanny, 50, 150, 3);               //边缘检测处理
-
-            //在得到的二值图像中寻找轮廓
-            vector< vector<Point> > contours;
-            vector< Vec4i > hierarchy;
-            findContours(imageCanny, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_NONE, Point(0, 0));
-
-            //在原有图像上绘制轮廓
-            for(int i = 0; i < (int)contours.size(); i++)
-            {
-                drawContours(imageCanny, contours, i, Scalar(255), 1, 8);
-            }
-
-            //GaussianBlur(imageGray, imageBlur, Size( 3, 3 ), 0, 0 );
-            //threshold(imageBlur,imageBinary,150,255,THRESH_BINARY);//改变参数实现不同的threshold  
+            Canny(imageGray, imageGray, 100, 300, 3);               //边缘检测处理
 
             /**
              * 一调用Canny函数执行几次之后就会触发V4L2驱动相关的错误
@@ -132,15 +116,7 @@ int main()
              * ...
              * 把显示边缘检测后的灰度图像 函数注释掉之后就不会
              */
-
-            sv.showImagesGray(imageCanny.data);
-
-
-
-            //sv.showImagesBinary(imageBinary.data);
-
-            //sv.showImagesBinary(imageBinary.data);
-
+            sv.showImagesGray(imageGray.data);
 
             eventIndex = C1KEEPON;                                  //图像处理后进入保持状态
 
@@ -163,7 +139,7 @@ int main()
 
 
     /************** 退出回收线程 **************/
-    printf("cancel thread forced.\n");
+        printf("cancel thread forced.\n");
 
     pthread_cancel(id);
 

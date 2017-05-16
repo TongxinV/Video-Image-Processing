@@ -48,6 +48,7 @@ void showvideo::proc()
 
     //screen->setPixmap(192, 60, img);
 
+
     vd->unget_frame();
 }
 
@@ -61,10 +62,6 @@ void showvideo::showImagesGray (unsigned char * p)
     screen->showImageGray(640, 480, p);
 }
 
-void showvideo::showImagesBinary (unsigned char * p)
-{
-    screen->showImageBinary(640, 480, p);
-}
 
 LinuxFbScreen * showvideo::inscreen()
 {

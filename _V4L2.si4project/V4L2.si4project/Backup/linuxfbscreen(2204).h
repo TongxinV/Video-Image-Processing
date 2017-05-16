@@ -24,7 +24,6 @@ public:
 
     void showImageRGB(unsigned int iw, unsigned int ih, unsigned char *data);   //显示数据
     void showImageGray(unsigned int iw, unsigned int ih, unsigned char *data);  //显示数据
-    void showImageBinary(unsigned int iw, unsigned int ih, unsigned char *data);  //显示数据
     void setPixmap(unsigned int x, unsigned int y, C1Image *i);         //显示数据
 
 private:

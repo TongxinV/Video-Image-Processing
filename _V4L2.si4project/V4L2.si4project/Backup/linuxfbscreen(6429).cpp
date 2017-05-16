@@ -150,13 +150,3 @@ void LinuxFbScreen::showImageGray(unsigned int iw, unsigned int ih, unsigned cha
     painter->_draw_img_gray(iw, ih, data);
 }
 
-void LinuxFbScreen::showImageBinary(unsigned int iw, unsigned int ih, unsigned char *data)
-{
-
-    painter->_draw_img_binary(iw, ih, data);
-}
-
-
-
-
-

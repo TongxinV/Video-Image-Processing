@@ -77,40 +77,11 @@ void C1Painter::_draw_img_rgb(unsigned int iw, unsigned int ih, unsigned char *d
 
 void C1Painter::_draw_img_gray(unsigned int iw, unsigned int ih, unsigned char *data)
 {
-    unsigned int *p = pStar + 60*Width + 192;       //从（192， 60）开始显示图片；对显示位置的直接处理，显然不合理，但先这样吧
-
-    const unsigned char * Byte =data;
-
-    printf("========= draw start ==========.\n");
-    printf("const unsigned char * Byte = %p.\n", Byte);
-    printf("unsigned int iw = %d.\n", iw);
-    printf("unsigned int ih = %d.\n", ih);
-
-    unsigned int i,j;
-    unsigned int cnt;
-
-    for (i=0; i<ih; ++i)
-    {
-        for (j=0; j<iw; ++j)
-        {
-            cnt = iw*i+j;
-            *(p + i * Width + j) = ((Byte[cnt] << 16) | (Byte[cnt] << 8) | (Byte[cnt] << 0));//Gray: R = G = B
-        }
-    }
-
-    printf("========= draw end  ==========.\n");
-}
-
-
-
-void C1Painter::_draw_img_binary(unsigned int iw, unsigned int ih, unsigned char *data)
-{
     unsigned int *p = pStar + 60*Width + 192;       //对显示位置的直接处理，显然不合理，但先这样吧
 
     const unsigned char * Byte =data;
 
     printf("========= draw start ==========.\n");
-    printf("========= img binary ==========.\n");
     printf("const unsigned char * Byte = %p.\n", Byte);
     printf("unsigned int iw = %d.\n", iw);
     printf("unsigned int ih = %d.\n", ih);
@@ -129,8 +100,4 @@ void C1Painter::_draw_img_binary(unsigned int iw, unsigned int ih, unsigned char
 
     printf("========= draw end  ==========.\n");
 }
-
-
-
-
 

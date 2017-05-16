@@ -28,7 +28,6 @@ public:
     void _setPixmap(unsigned int x, unsigned int y, const C1Image *img);      //在(x,y)显示数据
     void _draw_img_rgb(unsigned int iw, unsigned int ih, unsigned char *data);
     void _draw_img_gray(unsigned int iw, unsigned int ih, unsigned char *data);
-    void _draw_img_binary(unsigned int iw, unsigned int ih, unsigned char *data);
 };
 
 

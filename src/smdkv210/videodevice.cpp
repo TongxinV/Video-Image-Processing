@@ -139,8 +139,8 @@ int videodevice::init_mmap()
         return -1;
     }
 
-    //VideoBuffer 结构体保存映射后的信息
-    this->buffers = (VideoBuffer *)calloc(req.count, sizeof(VideoBuffer));//在用户空间中建立对应内存
+    //VideoBuffer 结构体 用来保存映射后的信息
+    this->buffers = (VideoBuffer *)calloc(req.count, sizeof(VideoBuffer));
 
     unsigned int n_buffers;
     for (n_buffers = 0; n_buffers < req.count; ++n_buffers)

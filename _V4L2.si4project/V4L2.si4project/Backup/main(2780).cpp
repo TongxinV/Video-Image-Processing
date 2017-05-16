@@ -21,13 +21,11 @@ void ConvertRGB2GRAY(const Mat &image,Mat &imageGray);
 #define C1KEEPON  2
 
 int eventIndex  = 0;
-
-
-/******************触摸输入线程**********************/
+//******************触摸输入线程**********************
 
 pthread_mutex_t tch_mutex;
 
-void cleanup(void *arg)         //线程清理技术，可省略，这里只是为了用一用学过的知识
+void cleanup(void *arg)
 {
     printf("cleanup: %s\n", (char *)arg);
 }
@@ -47,23 +45,17 @@ void *thread_touchinput(void *arg)
         switch(tc.index())
         {
             case EV_UNKNOWN:
-                printf("illegal input!         \n");
-                break;
-
+                printf("illegal input!\n");break;
             case EV_IMGPROC:
                 printf("eventIndex = C1IMGPROC.\n");
                 pthread_mutex_lock(&tch_mutex);
                 eventIndex = C1IMGPROC;
-                pthread_mutex_unlock(&tch_mutex);
-                break;
-
+                pthread_mutex_unlock(&tch_mutex);break;
             case EV_VDOSHOW:
                 printf("eventIndex = C1VDOSHOW.\n");
                 pthread_mutex_lock(&tch_mutex);
                 eventIndex = C1VDOSHOW;
-                pthread_mutex_unlock(&tch_mutex);
-                break;
-
+                pthread_mutex_unlock(&tch_mutex);break;
             default:printf("error.\n");
         }
     }
@@ -77,13 +69,10 @@ void *thread_touchinput(void *arg)
 
 Mat imageSource;
 Mat imageGray;
-Mat imageCanny;
-Mat imageBlur;
-Mat imageBinary;
+
 
 int main()
 {
-    /************** 创建按键线程 **************/
     pthread_t id = -1;
 
     pthread_mutex_init(&tch_mutex, NULL);
@@ -92,36 +81,20 @@ int main()
         cout << "Create thread success! " << endl;
     }
 
-
-    /************** 视频采集处理 **************/
     showvideo sv;
 
-    for(int i = 0; i < 500; ++i){
+    for(int i = 0; i < 1000; ++i){
         sv.proc();
 
         if(C1IMGPROC == eventIndex)
         {
             printf("************** Image Proc ... **************\n");
 
-            imageSource = Mat(480, 640, CV_8UC3, sv.data()).clone(); //用数据初始化矩阵，没有另外开辟内存
+            imageSource = Mat(480, 640, CV_8UC3, sv.data()).clone(); //用数据初始化矩阵，即没有另外开辟内存
 
-            ConvertRGB2GRAY(imageSource,imageGray);                 //RGB转换为灰度图
+            ConvertRGB2GRAY(imageSource,imageGray);             //RGB转换为灰度图
 
-            Canny(imageGray, imageCanny, 50, 150, 3);               //边缘检测处理
-
-            //在得到的二值图像中寻找轮廓
-            vector< vector<Point> > contours;
-            vector< Vec4i > hierarchy;
-            findContours(imageCanny, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_NONE, Point(0, 0));
-
-            //在原有图像上绘制轮廓
-            for(int i = 0; i < (int)contours.size(); i++)
-            {
-                drawContours(imageCanny, contours, i, Scalar(255), 1, 8);
-            }
-
-            //GaussianBlur(imageGray, imageBlur, Size( 3, 3 ), 0, 0 );
-            //threshold(imageBlur,imageBinary,150,255,THRESH_BINARY);//改变参数实现不同的threshold  
+            Canny(imageGray, imageGray, 100, 300, 3);       //边缘检测
 
             /**
              * 一调用Canny函数执行几次之后就会触发V4L2驱动相关的错误
@@ -132,37 +105,24 @@ int main()
              * ...
              * 把显示边缘检测后的灰度图像 函数注释掉之后就不会
              */
+            //sv.showImagesGray(imageGray.data);
 
-            sv.showImagesGray(imageCanny.data);
-
-
-
-            //sv.showImagesBinary(imageBinary.data);
-
-            //sv.showImagesBinary(imageBinary.data);
-
-
-            eventIndex = C1KEEPON;                                  //图像处理后进入保持状态
+            eventIndex = C1KEEPON;
 
         }
         else if(C1KEEPON == eventIndex)
         {
-            printf("************** Keep  On   ... **************\n");
-
-            sleep(1);                                               //不处理，即保持当前状态
+            //不处理，即保持当前状态
+            printf("eventIndex = C1KEEPON.\n");
+            sleep(1);
         }
         else if(C1VDOSHOW == eventIndex)
         {
-
-            printf("************** Video Show ... **************\n");
-
-            sv.showVideostream();                                   //显示视频流
+            sv.showVideostream();
         }
 
     }
 
-
-    /************** 退出回收线程 **************/
     printf("cancel thread forced.\n");
 
     pthread_cancel(id);
