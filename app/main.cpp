@@ -120,8 +120,38 @@ int main()
                 drawContours(imageCanny, contours, i, Scalar(255), 1, 8);
             }
 
-            //GaussianBlur(imageGray, imageBlur, Size( 3, 3 ), 0, 0 );
-            //threshold(imageBlur,imageBinary,150,255,THRESH_BINARY);//改变参数实现不同的threshold  
+            //计算轮廓的矩
+            vector<Moments> g_vMoments(contours.size());
+            for(int i = 0; i < (int)contours.size(); i++)
+            {
+                g_vMoments[i] = moments(contours[i], true);
+            }
+            //输出所有轮廓的矩
+            for(int i = 0; i < (int)contours.size(); i++)
+            {
+                cout << "【用矩计算出来的第" << i << "个轮廓的面积为：】" << g_vMoments[i].m00 << endl;
+            }
+
+            //利用计算得到的矩计算中心矩
+            vector<Point2f> centerMoments(contours.size());
+            for(int i = 0; i < (int)contours.size(); i++)
+            {
+                centerMoments[i] = Point2i(float(g_vMoments[i].m10 / g_vMoments[i].m00), float(g_vMoments[i].m01 / g_vMoments[i].m00));
+            }
+            //输出所有轮廓的中心矩
+            for(int i = 0; i < (int)contours.size(); i++)
+            {
+                cout << "【用矩计算出来的第" << i << "个轮廓的中心为：】" << centerMoments[i].x << "," << centerMoments[i].y << endl;
+            }
+
+            //将得到的中心矩显示出来
+            for(int i = 0; i < (int)contours.size(); i++)
+            {
+                circle(imageCanny, (Point2f)centerMoments[i], 5, Scalar(255), -1, 8);
+            }
+
+
+            sv.showImagesGray(imageCanny.data);
 
             /**
              * 一调用Canny函数执行几次之后就会触发V4L2驱动相关的错误
@@ -132,10 +162,6 @@ int main()
              * ...
              * 把显示边缘检测后的灰度图像 函数注释掉之后就不会
              */
-
-            sv.showImagesGray(imageCanny.data);
-
-
 
             //sv.showImagesBinary(imageBinary.data);
 
