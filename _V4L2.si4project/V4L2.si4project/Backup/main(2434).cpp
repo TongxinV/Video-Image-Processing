@@ -83,7 +83,7 @@ Mat imageBinary;
 
 int main()
 {
-    /************** 创建触摸线程 **************/
+    /************** 创建按键线程 **************/
     pthread_t id = -1;
 
     pthread_mutex_init(&tch_mutex, NULL);
@@ -94,10 +94,10 @@ int main()
 
 
     /************** 视频采集处理 **************/
-    showvideo sv;                                                   //摄像头初始化，包括设置视频参数，申请帧缓冲，构造采集队列
+    showvideo sv;
 
     for(int i = 0; i < 500; ++i){
-        sv.proc();                                                  //取出一帧数据并转化为RGB格式
+        sv.proc();
 
         if(C1IMGPROC == eventIndex)
         {
@@ -144,14 +144,14 @@ int main()
                 cout << "【用矩计算出来的第" << i << "个轮廓的中心为：】" << centerMoments[i].x << "," << centerMoments[i].y << endl;
             }
 
-            //将得到的中心矩在源图片中显示出来
+            //将得到的中心矩显示出来
             for(int i = 0; i < (int)contours.size(); i++)
             {
                 circle(imageCanny, (Point2f)centerMoments[i], 5, Scalar(255), -1, 8);
             }
 
 
-            sv.showImagesGray(imageCanny.data);                     //处理后的图片显示
+            sv.showImagesGray(imageCanny.data);
 
             /**
              * 一调用Canny函数执行几次之后就会触发V4L2驱动相关的错误
