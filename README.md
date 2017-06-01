@@ -66,7 +66,10 @@ DoING 基于嵌入式的视觉运动控制
 > gif图片有点大加载前会卡，而不是视频卡！！！请注意让它先加载完~
 
 
-![](https://raw.githubusercontent.com/TongxinV/Video-Image-Processing/master/doc/assets/P003cc.gif)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/TongxinV/Video-Image-Processing/master/doc/assets/P003cc.gif" alt="P003cc-GIF">
+
+</p>
 
     
 **openCV处理图**:
@@ -81,7 +84,8 @@ DoING 基于嵌入式的视觉运动控制
 
 ![](https://raw.githubusercontent.com/TongxinV/Video-Image-Processing/master/doc/assets/R002.png)
 
-    
+
+
 
 ### License
 
