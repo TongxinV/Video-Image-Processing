@@ -74,9 +74,17 @@ DoING 基于嵌入式的视觉运动控制
 
 ![](https://raw.githubusercontent.com/TongxinV/Video-Image-Processing/master/doc/assets/opencv%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%BB%93%E6%9E%9C.png)
     
+
+**物体轮廓中心提取效果**
+
+> 点击屏幕时开始进行图像处理
+
+![](https://raw.githubusercontent.com/TongxinV/Video-Image-Processing/master/doc/assets/R002.png)
+
     
+
 ### License
 
-
+ 
 ---
 author：@TongxinV
