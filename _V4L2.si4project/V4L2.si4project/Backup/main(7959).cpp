@@ -107,8 +107,6 @@ int main()
 
             ConvertRGB2GRAY(imageSource,imageGray);                 //RGB转换为灰度图
 
-            GaussianBlur(imageGray, imageGray, size(3, 3), 0, 0);   //高斯滤波平滑图像
-
             Canny(imageGray, imageCanny, 50, 150, 3);               //边缘检测处理
 
             //在得到的二值图像中寻找轮廓
